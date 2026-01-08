@@ -12,7 +12,7 @@ export class News extends Component {
 
   async componentDidMount() {
     try {
-      let response = await fetch("/api/news.js");
+      let response = await fetch("/api/news");
       let data = await response.json();
 
       this.setState({
