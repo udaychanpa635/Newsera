@@ -12,10 +12,7 @@ export class News extends Component {
 
   async componentDidMount() {
     try {
-      let url =
-        "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=41276610c8f741039c63dd7ff0086ab0";
-
-      let response = await fetch(url);
+      let response = await fetch("/api/news.js");
       let data = await response.json();
 
       this.setState({
@@ -33,7 +30,9 @@ export class News extends Component {
       <div className="container my-3">
         <h2 className="text-center mb-4">Newsera - Top Headlines</h2>
 
-        {this.state.loading && <h4 className="text-center">Loading...</h4>}
+        {this.state.loading && (
+          <h4 className="text-center">Loading...</h4>
+        )}
 
         <div className="row">
           {!this.state.loading &&
@@ -41,7 +40,9 @@ export class News extends Component {
               <div className="col-md-4 mb-4" key={element.url}>
                 <NewsItems
                   title={element.title || "No title"}
-                  description={element.description || "No description available"}
+                  description={
+                    element.description || "No description available"
+                  }
                   imageUrl={
                     element.urlToImage ||
                     "https://via.placeholder.com/300x200?text=No+Image"
