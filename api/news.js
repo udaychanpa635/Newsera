@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+    res.status(200).json({ success: true, message: "API working" });
   const { category = "general", page = 1, pageSize = 20 } = req.query;
 
   try {
