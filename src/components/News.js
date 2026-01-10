@@ -36,7 +36,7 @@ fetchNews = async () => {
     this.props.setProgress(20);
     this.setState({ loading: true });
 
-    const url = `/api/news?category=${this.props.category}&page=${this.state.page}&pageSize=${this.state.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${process.env.REACT_APP_NEWS_KEY}&page=${this.state.page}&pageSize=${this.state.pageSize}`;
 
     let response = await fetch(url);
     this.props.setProgress(50);
