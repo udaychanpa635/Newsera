@@ -25,41 +25,39 @@ export class News extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-  if (prevProps.category !== this.props.category) {
-    this.setState({ page: 1 }, this.fetchNews);
+    if (prevProps.category !== this.props.category) {
+      this.setState({ page: 1 }, this.fetchNews);
+    }
   }
-}
 
+  fetchNews = async () => {
+    try {
+      this.props.setProgress(20);
+      this.setState({ loading: true });
 
-fetchNews = async () => {
-  try {
-    this.props.setProgress(20);
-    this.setState({ loading: true });
-    console.log("API KEY:", process.env.REACT_APP_NEWS_API_KEY);
+      const url = `/api/news?category=${this.props.category}&page=${this.state.page}`;
 
-    const url = `/api/news?category=${this.props.category}&page=${this.state.page}`;
+      let response = await fetch(url);
+      this.props.setProgress(50);
 
-    let response = await fetch(url);
-    this.props.setProgress(50);
+      let data = await response.json();
+      this.props.setProgress(80);
+      console.log("GNews response:", data);
 
-    let data = await response.json();
-    this.props.setProgress(80);
-    console.log("NewsAPI response:", data);
+      this.setState({
+        articles: data.articles || [],
+        totalResults: data.totalArticles || 0,
+        loading: false
+      });
 
+      this.props.setProgress(100);
+    } catch (error) {
+      console.error("Error fetching news:", error);
+      this.setState({ loading: false });
+      this.props.setProgress(100);
+    }
+  };
 
-    this.setState({
-      articles: data.articles || [],
-      totalResults: data.totalResults || 0,
-      loading: false
-    });
-
-    this.props.setProgress(100);
-  } catch (error) {
-    console.error("Error fetching news:", error);
-    this.setState({ loading: false });
-    this.props.setProgress(100);
-  }
-};
   handlePrevClick = () => {
     this.setState(
       (prevState) => ({ page: prevState.page - 1 }),
@@ -81,21 +79,19 @@ fetchNews = async () => {
           Newsera - {this.props.category.toUpperCase()} Headlines
         </h2>
 
-        {/* {this.state.loading && <Spinner />} */}
-
         <div className="row">
           {!this.state.loading &&
-            this.state.articles.map((element) => (
-              <div className="col-md-4 mb-4" key={element.url}>
+            this.state.articles.map((element, index) => (
+              <div className="col-md-4 mb-4" key={index}>
                 <NewsItems
                   title={element.title || "No title"}
                   description={element.description || "No description available"}
                   imageUrl={
-                    element.urlToImage ||
+                    element.image ||
                     "https://via.placeholder.com/300x200?text=No+Image"
                   }
                   newsUrl={element.url}
-                  author={element.author}
+                  author={element.source?.name || "Unknown"}
                   date={element.publishedAt}
                 />
               </div>
