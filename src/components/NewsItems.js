@@ -2,53 +2,42 @@ import React, { Component } from "react";
 
 export class NewsItems extends Component {
   render() {
-    const {
-      title,
-      description,
-      imageUrl,
-      newsUrl,
-      author,
-      date
-    } = this.props;
+    const { title, description, imageUrl, newsUrl, author, date } = this.props;
 
     const fallbackImage =
-      "https://via.placeholder.com/400x220?text=No+Image";
+      "https://via.placeholder.com/600x350?text=No+Image";
 
     return (
-      <div className="card h-100 shadow-sm">
-        <img
-          src={imageUrl ? imageUrl : fallbackImage}
-          className="card-img-top"
-          alt={title || "News"}
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = fallbackImage;
-          }}
-          style={{ height: "200px", objectFit: "cover" }}
-        />
+      <div className="news-card">
+        <div className="image-wrapper">
+          <img
+            src={imageUrl || fallbackImage}
+            alt={title || "News"}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = fallbackImage;
+            }}
+          />
+        </div>
 
-        <div className="card-body d-flex flex-column">
-          <h5 className="card-title">
-            {title ? title.slice(0, 80) : "Untitled News"}
-          </h5>
+        <div className="news-content">
+          <h5>{title ? title.slice(0, 90) : "Untitled News"}</h5>
 
-          <p className="card-text text-muted">
+          <p>
             {description
-              ? description.slice(0, 120)
+              ? description.slice(0, 130)
               : "No description available."}
           </p>
-          <p class="card-text"><small className="text-muted">By {!author?"Unknown": author} on {new Date(date).toGMTString()}</small>
 
-          </p>
+          <div className="news-footer">
+            <span>
+              {author || "Unknown"} • {new Date(date).toLocaleDateString()}
+            </span>
 
-          <a
-            href={newsUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-sm btn-dark mt-auto"
-          >
-            Read More →
-          </a>
+            <a href={newsUrl} target="_blank" rel="noreferrer">
+              Read →
+            </a>
+          </div>
         </div>
       </div>
     );

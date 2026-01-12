@@ -75,9 +75,17 @@ export class News extends Component {
   render() {
     return (
       <div className="container my-3">
-        <h2 className="text-center mb-4">
-          Newsera - {this.props.category.toUpperCase()} Headlines
-        </h2>
+        <div className="news-hero">
+          <h1 className="news-title">
+            <span className="brand">Newsera</span>
+            <span className="dot">•</span>
+            <span className="category">{this.props.category}</span>
+          </h1>
+          <p className="news-subtitle">
+            Stay ahead. Curated headlines that matter, in real time.
+          </p>
+        </div>
+
 
         <div className="row">
           {!this.state.loading &&
